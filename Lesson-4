@@ -1,0 +1,162 @@
+//1. Описать класс Car c общими свойствами автомобилей и пустым методом действия по аналогии с прошлым заданием.
+//
+//2. Описать пару его наследников trunkCar и sportСar. Подумать, какими отличительными свойствами обладают эти автомобили. Описать в каждом наследнике специфичные для него свойства.
+//
+//3. Взять из прошлого урока enum с действиями над автомобилем. Подумать, какие особенные действия имеет trunkCar, а какие – sportCar. Добавить эти действия в перечисление.
+//
+//4. В каждом подклассе переопределить метод действия с автомобилем в соответствии с его классом.
+//
+//5. Создать несколько объектов каждого класса. Применить к ним различные действия.
+//
+//6. Вывести значения свойств экземпляров в консоль.
+
+import Foundation
+import UIKit
+
+enum windowPosotion {
+    case open, close
+}
+
+enum EngineState {
+    case start, stop
+}
+
+
+class Car {
+    let color: String
+    let airconditioning: String
+    let year: Int
+    var windowPosotion: windowPosotion
+    var engine: EngineState
+    var carMileage: Int
+    
+    init(color: String, airconditioning: String, year: Int, windowPosotion: windowPosotion, engine: EngineState, carMileage: Int) {
+        self.color = color
+        self.airconditioning = airconditioning
+        self.year = year
+        self.windowPosotion = windowPosotion
+        self.engine = engine
+        self.carMileage = carMileage
+    }
+    
+    func km () {
+        carMileage = 0
+    }
+    
+    func engineStar () {
+        engine = .start
+    }
+    
+    func engineStop () {
+        engine = .stop
+    }
+    
+    func openWindow () {
+        windowPosotion = .open
+    }
+    func closeWindow () {
+        windowPosotion = .close
+    }
+}
+
+class trunkCar: Car {
+    let refrigeratedBox: String
+    let wheels: Int
+    var heavyLoad: HeavyLoad
+    
+    init(color: String, airconditioning: String, year: Int, windowPosotion: windowPosotion, engine: EngineState, carMileage: Int, refrigeratedBox: String, wheels: Int, heavyLoad: HeavyLoad) {
+        self.refrigeratedBox = refrigeratedBox
+        self.wheels = wheels
+        self.heavyLoad = heavyLoad
+        super.init(color: color, airconditioning: airconditioning, year: year, windowPosotion: windowPosotion, engine: engine, carMileage: carMileage)
+    }
+    enum HeavyLoad {
+        case avaliable, missing
+    }
+    
+    func load () {
+        heavyLoad = .avaliable
+        print("Возможно загрузить много груза")
+    }
+    
+    func unload () {
+        heavyLoad = .missing
+        print("Невозможно загрузить много груза")
+    }
+    
+    override func openWindow () {
+        super.openWindow()
+        print("Окна открыто")
+    }
+    override func engineStar() {
+        super.engineStar()
+        print("Двигатель запущен")
+    }
+    
+    override func km() {
+        carMileage = 1000
+        print("Пробег автомобиля \(carMileage) км")
+    }
+}
+
+class sportCar: Car {
+    let bluetooth: String
+    let overclocking: Double
+    var turboMode: TurboMode
+    
+    init(color: String, airconditioning: String, year: Int, bluetooth: String, overclocking: Double, turboMode: TurboMode) {
+        self.bluetooth = bluetooth
+        self.overclocking = overclocking
+        self.turboMode = turboMode
+        super.init(color: color, airconditioning: airconditioning, year: year, windowPosotion: .close, engine: .stop, carMileage: 500)
+    }
+    enum TurboMode {
+        case launched, switchedoff
+    }
+    func modeOn (){
+        turboMode = .launched
+        print("Спортивный режим влючен")
+    }
+    
+    func modeOff (){
+        turboMode = .switchedoff
+        print("Спортивный режим отключен")
+    }
+    
+    override func closeWindow () {
+        super.closeWindow()
+        print("Окна закрыты")
+    }
+    override func engineStop() {
+        super.engineStop()
+        print("Двигатель заглушен")
+    }
+    override func km() {
+        carMileage = 500
+        print("Пробег автомобиля \(carMileage) км")
+    }
+    
+}
+
+
+var trunkCar1 = trunkCar(color: "White", airconditioning: "Есть", year: 2010, windowPosotion: .open, engine: .start, carMileage: 1000, refrigeratedBox: "Есть", wheels: 10, heavyLoad: .avaliable)
+print("Цвет автомобиля \(trunkCar1.color)")
+print("Кондиционер а автомобиле \(trunkCar1.airconditioning)")
+print("Автомобиль \(trunkCar1.year) года выпуска")
+trunkCar1.openWindow()
+trunkCar1.engineStar()
+trunkCar1.km()
+print("Рефрежираторный кузов у автомобиля \(trunkCar1.refrigeratedBox)")
+print("У автомобиля \(trunkCar1.wheels) колес")
+trunkCar1.load()
+
+var sportCar1 = sportCar(color: "Red", airconditioning: "Есть", year: 2019, bluetooth: "Есть", overclocking: 10, turboMode: .launched)
+print("Цвет автомобиля \(sportCar1.color)")
+print("Кондиционер а автомобиле \(sportCar1.airconditioning)")
+print("Автомобиль \(sportCar1.year) года выпуска")
+sportCar1.closeWindow()
+sportCar1.engineStop()
+sportCar1.km()
+print("В автомобиле blurtooth \(sportCar1.bluetooth)")
+print("Автомобиль разгоняется за \(sportCar1.overclocking) с.")
+sportCar1.modeOn()
